@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة المؤتمر الرئيسية</title>
+  <link rel="stylesheet" href="dashboard.style.css">
+  <!-- Supabase JS Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- شريط الملاحة العوي -->
+  <header class="navbar">
+    <div class="logo-area">
+      <h2>🏆 مؤتمر الشباب</h2>
+    </div>
+    <div class="user-profile">
+      <div class="user-badge">
+        <span id="nav-user-name">جاري التحميل...</span>
+        <div class="score-pill">
+          ⚡ النقاط: <strong id="nav-user-score">0</strong>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="handleLogout()">خروج</button>
+    </div>
+  </header>
+
+  <div class="main-layout">
+    <!-- القائمة الجانبية -->
+    <aside class="sidebar">
+      <button class="nav-tab active" onclick="switchTab('leaderboard', this)">
+        🥇 لوحة الصدارة (السكور)
+      </button>
+      <button class="nav-tab" onclick="switchTab('schedule', this)">
+        📅 جدول المواعيد
+      </button>
+      <button class="nav-tab" onclick="switchTab('library', this)">
+        📚 المكتبة والكتب
+      </button>
+
+      <!-- تبويبة تظهر للهوست فقط -->
+      <button id="admin-tab" class="nav-tab admin-btn hidden" onclick="switchTab('admin', this)">
+        ⚙️ لوحة الهوست (الأدمن)
+      </button>
+    </aside>
+
+    <!-- محتوى الصفحة -->
+    <main class="content-area">
+      
+      <!-- 1. قسم لوحة الصدارة -->
+      <section id="leaderboard" class="tab-content">
+        <div class="section-header">
+          <h3>ترتيب المشاركين حسب السكور</h3>
+          <p>التنافس مباشر ويتم تحديث النقاط من الهوست أولاً بأول</p>
+        </div>
+        <div class="table-card">
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th>الترتيب</th>
+                <th>اسم المشارك</th>
+                <th>النقاط</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-body">
+              <tr><td colspan="3" class="loading">جاري تحميل السكور...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 2. قسم جدول المواعيد -->
+      <section id="schedule" class="tab-content hidden">
+        <div class="section-header">
+          <h3>جدول فعاليات المؤتمر</h3>
+          <p>تابع مواعيد الجلسات والفقرات اليومية</p>
+        </div>
+        <div id="events-list" class="cards-grid">
+          <div class="card">
+            <h4>افتتاح المؤتمر والترحيب</h4>
+            <span class="event-time">⏱️ 10:00 صباحاً</span>
+            <p>الجلسة الافتتاحية والتعريف ببرنامج المؤتمر ونظام النقاط.</p>
+          </div>
+          <div class="card">
+            <h4>ورشة العمل الأولى</h4>
+            <span class="event-time">⏱️ 11:30 صباحاً</span>
+            <p>مناقشة محاور التفوق والعمل الجماعي.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. قسم المكتبة والكتب -->
+      <section id="library" class="tab-content hidden">
+        <div class="section-header">
+          <h3>المكتبة والمصادر</h3>
+          <p>كتب ومقالات مخصصة للمشاركين في المؤتمر</p>
+        </div>
+        <div class="cards-grid">
+          <div class="card">
+            <h4>📖 كتاب دليل المؤتمر</h4>
+            <p>ملخص شامل لكافة القواعد والفعاليات والمحاور الرئيسية.</p>
+            <a href="#" class="btn-link">قراءة / تحميل</a>
+          </div>
+          <div class="card">
+            <h4>📄 كتيب الورش التدريبية</h4>
+            <p>المادة العلمية الخاصة بجميع ورش العمل المقامة في المؤتمر.</p>
+            <a href="#" class="btn-link">قراءة / تحميل</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. قسم لوحة الهوست (الأدمن فقط) -->
+      <section id="admin" class="tab-content hidden">
+        <div class="section-header">
+          <h3>إدارة نقاط المشاركين (خاص بالهوست)</h3>
+          <p>يمكنك إضافة أو خصم النقاط لكل شاب مباشرة</p>
+        </div>
+        <div class="table-card">
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th>اسم المشارك</th>
+                <th>النقاط الحالية</th>
+                <th>إجراءات تعديل السكور</th>
+              </tr>
+            </thead>
+            <tbody id="admin-users-body">
+              <tr><td colspan="3" class="loading">جاري تحميل حسابات المستخدمين...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
