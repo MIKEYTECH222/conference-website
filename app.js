@@ -1,28 +1,4 @@
-// تم وضع بيانات مشروعك هنا تلقائياً
-const SUPABASE_URL = "https://fzaybeajxtvtxoxaqfzn.supabase.co";
-const SUPABASE_KEY = "sb_publishable_gc0ubfcTs0aIaq9wrvA0IA_7afEDykA";
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-function switchAuthTab(tab) {
-  const loginForm = document.getElementById('login-form');
-  const regForm = document.getElementById('register-form');
-  const tabLogin = document.getElementById('tab-login');
-  const tabReg = document.getElementById('tab-register');
-  clearMessage();
-
-  if (tab === 'login') {
-    loginForm.classList.remove('hidden');
-    regForm.classList.add('hidden');
-    tabLogin.classList.add('active');
-    tabReg.classList.remove('active');
-  } else {
-    loginForm.classList.add('hidden');
-    regForm.classList.remove('hidden');
-    tabLogin.classList.remove('active');
-    tabReg.classList.add('active');
-  }
-}
-
+// 1. تسجيل حساب جديد
 async function handleRegister(e) {
   e.preventDefault();
   const name = document.getElementById('reg-name').value;
@@ -31,42 +7,30 @@ async function handleRegister(e) {
   const btn = document.getElementById('reg-btn');
 
   btn.disabled = true;
-  btn.innerText = "جاري التسجيل...";
-  clearMessage();
+  btn.innerText = "جاري إنشاء الحساب...";
 
+  // إنشاء الحساب في Supabase
   const { data, error } = await supabase.auth.signUp({ email, password });
 
   if (error) {
-    showMessage(error.message, 'error');
+    alert("خطأ في التسجيل: " + error.message);
     btn.disabled = false;
     btn.innerText = "إنشاء الحساب";
     return;
   }
 
+  // إضافة بيانات المستخدم في جدول profiles
   if (data.user) {
-    const { error: profileError } = await supabase.from('profiles').insert([
-      {
-        id: data.user.id,
-        full_name: name,
-        score: 0,
-        role: 'user'
-      }
+    await supabase.from('profiles').insert([
+      { id: data.user.id, full_name: name, score: 0, role: 'user' }
     ]);
-
-    if (profileError) {
-      showMessage(profileError.message, 'error');
-    } else {
-      showMessage("تم إنشاء الحساب بنجاح! جاري تحويلك...", 'success');
-      setTimeout(() => {
-        window.location.href = "dashboard.html";
-      }, 1500);
-    }
   }
 
-  btn.disabled = false;
-  btn.innerText = "إنشاء الحساب";
+  // التحويل المباشر لصفحة الداشبورد
+  window.location.assign("./dashboard.html");
 }
 
+// 2. تسجيل الدخول
 async function handleLogin(e) {
   e.preventDefault();
   const email = document.getElementById('login-email').value;
@@ -75,44 +39,15 @@ async function handleLogin(e) {
 
   btn.disabled = true;
   btn.innerText = "جاري الدخول...";
-  clearMessage();
 
   const { error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
-    showMessage("البريد الإلكتروني أو كلمة السر غير صحيحة", 'error');
+    alert("بيانات الدخول غير صحيحة");
     btn.disabled = false;
     btn.innerText = "دخول";
   } else {
-    showMessage("تم تسجيل الدخول بنجاح!", 'success');
-    setTimeout(() => {
-      window.location.href = "dashboard.html";
-    }, 1000);
+    // التحويل المباشر لصفحة الداشبورد
+    window.location.assign("./dashboard.html");
   }
-}
-
-async function handleGoogleAuth() {
-  clearMessage();
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      redirectTo: window.location.origin + '/dashboard.html'
-    }
-  });
-
-  if (error) {
-    showMessage("حدث خطأ أثناء الاتصال بـ Google: " + error.message, 'error');
-  }
-}
-
-function showMessage(msg, type) {
-  const box = document.getElementById('auth-message');
-  box.innerText = msg;
-  box.className = `message ${type}`;
-}
-
-function clearMessage() {
-  const box = document.getElementById('auth-message');
-  box.className = 'message';
-  box.innerText = '';
 }
