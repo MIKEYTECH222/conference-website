@@ -5,12 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>لوحة المؤتمر الرئيسية</title>
   <link rel="stylesheet" href="dashboard.style.css">
-  <!-- Supabase JS Library -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
-  <!-- شريط الملاحة العوي -->
   <header class="navbar">
     <div class="logo-area">
       <h2>🏆 مؤتمر الشباب</h2>
@@ -27,7 +25,6 @@
   </header>
 
   <div class="main-layout">
-    <!-- القائمة الجانبية -->
     <aside class="sidebar">
       <button class="nav-tab active" onclick="switchTab('leaderboard', this)">
         🥇 لوحة الصدارة (السكور)
@@ -39,16 +36,14 @@
         📚 المكتبة والكتب
       </button>
 
-      <!-- تبويبة تظهر للهوست فقط -->
       <button id="admin-tab" class="nav-tab admin-btn hidden" onclick="switchTab('admin', this)">
         ⚙️ لوحة الهوست (الأدمن)
       </button>
     </aside>
 
-    <!-- محتوى الصفحة -->
     <main class="content-area">
       
-      <!-- 1. قسم لوحة الصدارة -->
+      <!-- 1. لوحة الصدارة -->
       <section id="leaderboard" class="tab-content">
         <div class="section-header">
           <h3>ترتيب المشاركين حسب السكور</h3>
@@ -70,7 +65,7 @@
         </div>
       </section>
 
-      <!-- 2. قسم جدول المواعيد -->
+      <!-- 2. جدول المواعيد -->
       <section id="schedule" class="tab-content hidden">
         <div class="section-header">
           <h3>جدول فعاليات المؤتمر</h3>
@@ -90,7 +85,7 @@
         </div>
       </section>
 
-      <!-- 3. قسم المكتبة والكتب -->
+      <!-- 3. المكتبة والكتب -->
       <section id="library" class="tab-content hidden">
         <div class="section-header">
           <h3>المكتبة والمصادر</h3>
@@ -110,7 +105,7 @@
         </div>
       </section>
 
-      <!-- 4. قسم لوحة الهوست (الأدمن فقط) -->
+      <!-- 4. لوحة الهوست -->
       <section id="admin" class="tab-content hidden">
         <div class="section-header">
           <h3>إدارة نقاط المشاركين (خاص بالهوست)</h3>
