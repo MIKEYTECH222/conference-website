@@ -1,9 +1,8 @@
-// ضع بيانات مشروع Supabase الخاصة بك هنا
-const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
-const SUPABASE_KEY = "YOUR_SUPABASE_ANON_KEY";
+// تم وضع بيانات مشروعك هنا تلقائياً
+const SUPABASE_URL = "https://fzaybeajxtvtxoxaqfzn.supabase.co";
+const SUPABASE_KEY = "sb_publishable_gc0ubfcTs0aIaq9wrvA0IA_7afEDykA";
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// التنقل بين تبويبي تسجيل الدخول وإنشاء حساب
 function switchAuthTab(tab) {
   const loginForm = document.getElementById('login-form');
   const regForm = document.getElementById('register-form');
@@ -24,7 +23,6 @@ function switchAuthTab(tab) {
   }
 }
 
-// 1. إنشاء حساب بالبريد وكلمة السر
 async function handleRegister(e) {
   e.preventDefault();
   const name = document.getElementById('reg-name').value;
@@ -69,7 +67,6 @@ async function handleRegister(e) {
   btn.innerText = "إنشاء الحساب";
 }
 
-// 2. تسجيل الدخول بالبريد وكلمة السر
 async function handleLogin(e) {
   e.preventDefault();
   const email = document.getElementById('login-email').value;
@@ -94,7 +91,6 @@ async function handleLogin(e) {
   }
 }
 
-// 3. التسجيل والتسجيل الدخول باستخدام Google
 async function handleGoogleAuth() {
   clearMessage();
   const { error } = await supabase.auth.signInWithOAuth({
@@ -109,7 +105,6 @@ async function handleGoogleAuth() {
   }
 }
 
-// أدوات إظهار وإخفاء الرسائل
 function showMessage(msg, type) {
   const box = document.getElementById('auth-message');
   box.innerText = msg;
