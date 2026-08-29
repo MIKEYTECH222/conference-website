@@ -1,17 +1,15 @@
-// استبدل بالقيم الخاصة بمشروعك في Supabase
-const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
-const SUPABASE_KEY = "YOUR_SUPABASE_ANON_KEY";
+// تم وضع بيانات مشروعك هنا تلقائياً
+const SUPABASE_URL = "https://fzaybeajxtvtxoxaqfzn.supabase.co";
+const SUPABASE_KEY = "sb_publishable_gc0ubfcTs0aIaq9wrvA0IA_7afEDykA";
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null;
 let userProfile = null;
 
-// التحقق من تسجيل الدخول فور فتح الصفحة
 async function initDashboard() {
   const { data: { session } } = await supabase.auth.getSession();
 
   if (!session) {
-    // إرجاع للمستخدم لصفحة الدخول لو لم يكن مسجلاً
     window.location.href = "index.html";
     return;
   }
@@ -21,7 +19,6 @@ async function initDashboard() {
   loadLeaderboard();
 }
 
-// جلب بيانات بروفايل المستخدم الحالي
 async function fetchUserProfile() {
   const { data, error } = await supabase
     .from('profiles')
@@ -35,13 +32,11 @@ async function fetchUserProfile() {
   document.getElementById('nav-user-name').innerText = userProfile.full_name;
   document.getElementById('nav-user-score').innerText = userProfile.score;
 
-  // إظهار تبويبة الهوست فقط إذا كان المستخدم أدمن
   if (userProfile.role === 'admin') {
     document.getElementById('admin-tab').classList.remove('hidden');
   }
 }
 
-// التنقل بين الأقسام
 function switchTab(tabId, btnElement) {
   document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
   document.querySelectorAll('.nav-tab').forEach(btn => btn.classList.remove('active'));
@@ -53,7 +48,6 @@ function switchTab(tabId, btnElement) {
   if (tabId === 'admin') loadAdminPanel();
 }
 
-// تحميل وترتيب الليدربورد
 async function loadLeaderboard() {
   const tbody = document.getElementById('leaderboard-body');
   
@@ -83,7 +77,6 @@ async function loadLeaderboard() {
   }).join('');
 }
 
-// تحميل لوحة الهوست لتعديل السكور
 async function loadAdminPanel() {
   const tbody = document.getElementById('admin-users-body');
 
@@ -110,7 +103,6 @@ async function loadAdminPanel() {
   `).join('');
 }
 
-// تعديل النقاط من الهوست
 async function changeScore(userId, newScore) {
   if (newScore < 0) newScore = 0;
 
@@ -121,18 +113,15 @@ async function changeScore(userId, newScore) {
 
   if (!error) {
     loadAdminPanel();
-    // تحديث الهيدر لو الأدمن بيعدل لنفسه
     if (userId === currentUser.id) {
       document.getElementById('nav-user-score').innerText = newScore;
     }
   }
 }
 
-// تسجيل الخروج
 async function handleLogout() {
   await supabase.auth.signOut();
   window.location.href = "index.html";
 }
 
-// بدء التشغيل
 initDashboard();
