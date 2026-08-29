@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>التسجيل في المؤتمر</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="tab-header">
+        <button id="tab-login" class="active" onclick="switchAuthTab('login')">تسجيل الدخول</button>
+        <button id="tab-register" onclick="switchAuthTab('register')">حساب جديد</button>
+      </div>
+
+      <!-- نموذج تسجيل الدخول -->
+      <form id="login-form" class="auth-form" onsubmit="handleLogin(event)">
+        <h2>مرحباً بك مجدداً 👋</h2>
+        <p class="subtitle">سجل دخولك لمتابعة نقاطك وجدول المؤتمر</p>
+
+        <div class="input-group">
+          <label>البريد الإلكتروني</label>
+          <input type="email" id="login-email" required placeholder="example@mail.com">
+        </div>
+
+        <div class="input-group">
+          <label>كلمة السر</label>
+          <input type="password" id="login-password" required placeholder="••••••••">
+        </div>
+
+        <button type="submit" class="btn-primary" id="login-btn">دخول</button>
+      </form>
+
+      <!-- نموذج حساب جديد -->
+      <form id="register-form" class="auth-form hidden" onsubmit="handleRegister(event)">
+        <h2>إنشاء حساب جديد 🚀</h2>
+        <p class="subtitle">انضم للمؤتمر وتنافس على الصدارة</p>
+
+        <div class="input-group">
+          <label>الاسم بالكامل</label>
+          <input type="text" id="reg-name" required placeholder="اسمك الثلاثي">
+        </div>
+
+        <div class="input-group">
+          <label>البريد الإلكتروني</label>
+          <input type="email" id="reg-email" required placeholder="example@mail.com">
+        </div>
+
+        <div class="input-group">
+          <label>كلمة السر</label>
+          <input type="password" id="reg-password" required minlength="6" placeholder="6 أحرف على الأقل">
+        </div>
+
+        <button type="submit" class="btn-primary" id="reg-btn">إنشاء الحساب</button>
+      </form>
+
+      <div id="auth-message" class="message"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
