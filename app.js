@@ -1,9 +1,9 @@
-// استبدل بالقيم الخاصة بمشروعك من Supabase
+// ضع بيانات مشروع Supabase الخاصة بك هنا
 const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
 const SUPABASE_KEY = "YOUR_SUPABASE_ANON_KEY";
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// التنقل بين التبويبات
+// التنقل بين تبويبي تسجيل الدخول وإنشاء حساب
 function switchAuthTab(tab) {
   const loginForm = document.getElementById('login-form');
   const regForm = document.getElementById('register-form');
@@ -24,7 +24,7 @@ function switchAuthTab(tab) {
   }
 }
 
-// إنشاء حساب جديد
+// 1. إنشاء حساب بالبريد وكلمة السر
 async function handleRegister(e) {
   e.preventDefault();
   const name = document.getElementById('reg-name').value;
@@ -36,7 +36,6 @@ async function handleRegister(e) {
   btn.innerText = "جاري التسجيل...";
   clearMessage();
 
-  // 1. التسجيل في نظام الحسابات
   const { data, error } = await supabase.auth.signUp({ email, password });
 
   if (error) {
@@ -46,7 +45,6 @@ async function handleRegister(e) {
     return;
   }
 
-  // 2. إضافة اسم الشخص والسكور في جدول profiles
   if (data.user) {
     const { error: profileError } = await supabase.from('profiles').insert([
       {
@@ -62,7 +60,6 @@ async function handleRegister(e) {
     } else {
       showMessage("تم إنشاء الحساب بنجاح! جاري تحويلك...", 'success');
       setTimeout(() => {
-        // التوجيه إلى الصفحة الرئيسية
         window.location.href = "dashboard.html";
       }, 1500);
     }
@@ -72,7 +69,7 @@ async function handleRegister(e) {
   btn.innerText = "إنشاء الحساب";
 }
 
-// تسجيل الدخول
+// 2. تسجيل الدخول بالبريد وكلمة السر
 async function handleLogin(e) {
   e.preventDefault();
   const email = document.getElementById('login-email').value;
@@ -83,7 +80,7 @@ async function handleLogin(e) {
   btn.innerText = "جاري الدخول...";
   clearMessage();
 
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
     showMessage("البريد الإلكتروني أو كلمة السر غير صحيحة", 'error');
@@ -97,6 +94,22 @@ async function handleLogin(e) {
   }
 }
 
+// 3. التسجيل والتسجيل الدخول باستخدام Google
+async function handleGoogleAuth() {
+  clearMessage();
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: window.location.origin + '/dashboard.html'
+    }
+  });
+
+  if (error) {
+    showMessage("حدث خطأ أثناء الاتصال بـ Google: " + error.message, 'error');
+  }
+}
+
+// أدوات إظهار وإخفاء الرسائل
 function showMessage(msg, type) {
   const box = document.getElementById('auth-message');
   box.innerText = msg;
